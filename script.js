@@ -29,25 +29,22 @@ const rollDice = () => {
   });
 };
 
-rollDiceBtn.addEventListener("click", () => {
-  if (rolls >= 3) {
-    alert("You must select a score before rolling again!");
-    return;
-  }
-
-  // Бросаем кубики
-  diceValuesArr = Array.from({ length: 5 }, () => Math.floor(Math.random() * 6) + 1);
-
-  // Отображаем значения кубиков
-  listOfAllDice.forEach((dieEl, index) => {
-    dieEl.textContent = diceValuesArr[index];
-  });
-
-  // Увеличиваем счётчик бросков
-  rolls += 1;
+const updateStats = () => {
   rollsElement.textContent = rolls;
-});
+  roundElement.textContent = round;
+};
 
+
+
+rollDiceBtn.addEventListener("click", () => {
+  if (rolls === 3) {
+    alert("You have made three rolls this round. Please select a score.");
+  } else {
+    rolls++;
+    rollDice();
+    updateStats();
+  }
+});
 
 rulesBtn.addEventListener("click", () => {
   isModalShowing = !isModalShowing;
