@@ -15,14 +15,26 @@ let isModalShowing = false;
 let score = 0;
 let round = 1; 
 let rolls = 0; 
+  rollDiceBtn.addEventListener("click", () => {
+  diceValuesArr = Array.from({ length: 5 }, () => Math.floor(Math.random() * 6) + 1);
+
+  listOfAllDice.forEach((dieEl, index) => {
+    dieEl.textContent = diceValuesArr[index];
+  });
+
+  rolls += 1;
+  rollsElement.textContent = rolls;
+});
+
 
 rulesBtn.addEventListener("click", () => {
   isModalShowing = !isModalShowing;
+
   if (isModalShowing) {
-    rulesContainer.style.display = "block";
     rulesBtn.textContent = "Hide rules";
+    rulesContainer.style.display = "block";
   } else {
-    rulesContainer.style.display = "none";
     rulesBtn.textContent = "Show rules";
+    rulesContainer.style.display = "none";
   }
 });
