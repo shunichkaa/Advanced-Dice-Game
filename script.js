@@ -15,13 +15,35 @@ let isModalShowing = false;
 let score = 0;
 let round = 1; 
 let rolls = 0; 
-  rollDiceBtn.addEventListener("click", () => {
+
+const rollDice = () => {
+  diceValuesArr = [];
+
+  for (let i = 0; i < 5; i++) {
+    const randomDice = Math.floor(Math.random() * 6) + 1;
+    diceValuesArr.push(randomDice);
+  };
+
+  listOfAllDice.forEach((dice, index) => {
+    dice.textContent = diceValuesArr[index];
+  });
+};
+
+rollDiceBtn.addEventListener("click", () => {
+  if (rolls >= 3) {
+    alert("You must select a score before rolling again!");
+    return;
+  }
+
+  // Бросаем кубики
   diceValuesArr = Array.from({ length: 5 }, () => Math.floor(Math.random() * 6) + 1);
 
+  // Отображаем значения кубиков
   listOfAllDice.forEach((dieEl, index) => {
     dieEl.textContent = diceValuesArr[index];
   });
 
+  // Увеличиваем счётчик бросков
   rolls += 1;
   rollsElement.textContent = rolls;
 });
