@@ -40,6 +40,27 @@ const updateRadioOption = (index, score) => {
   scoreSpans[index].textContent = `, score = ${score}`;
 };
 
+function updateScore(selectedValueStr, achieved) {
+  const selectedValue = parseInt(selectedValueStr, 10);
+  if (Number.isNaN(selectedValue)) return;
+  score += selectedValue;
+  totalScoreElement.textContent = score;
+  const li = document.createElement("li");
+  li.textContent = `${achieved} : ${selectedValue}`;
+  scoreHistory.appendChild(li);
+  round++;
+  rolls = 0;
+  updateStats();
+  resetRadioOptions();
+}
+
+keepScoreBtn.addEventListener("click", () => {
+  const checked = Array.from(scoreInputs).find(input => input.checked);
+  if (!checked) return;
+  updateScore(checked.value, checked.id);
+});
+
+
 const getHighestDuplicates = (arr) => {
   const counts = {};
 
@@ -76,15 +97,13 @@ const getHighestDuplicates = (arr) => {
   updateRadioOption(5, 0);
 };
 
-
 const resetRadioOptions = () => {
-  scoreInputs.forEach(input => {
+  scoreInputs.forEach((input) => {
     input.disabled = true;
     input.checked = false;
-    input.value = "";
   });
 
-  scoreSpans.forEach(span => {
+  scoreSpans.forEach((span) => {
     span.textContent = "";
   });
 };
