@@ -40,26 +40,12 @@ const updateRadioOption = (index, score) => {
   scoreSpans[index].textContent = `, score = ${score}`;
 };
 
-function updateScore(selectedValueStr, achieved) {
-  const selectedValue = parseInt(selectedValueStr, 10);
-  if (Number.isNaN(selectedValue)) return;
-  score += selectedValue;
+const updateScore = (selectedValue, achieved) => {
+  score += parseInt(selectedValue);
   totalScoreElement.textContent = score;
-  const li = document.createElement("li");
-  li.textContent = `${achieved} : ${selectedValue}`;
-  scoreHistory.appendChild(li);
-  round++;
-  rolls = 0;
-  updateStats();
-  resetRadioOptions();
-}
 
-keepScoreBtn.addEventListener("click", () => {
-  const checked = Array.from(scoreInputs).find(input => input.checked);
-  if (!checked) return;
-  updateScore(checked.value, checked.id);
-});
-
+  scoreHistory.innerHTML += `<li>${achieved} : ${selectedValue}</li>`;
+};
 
 const getHighestDuplicates = (arr) => {
   const counts = {};
@@ -129,5 +115,29 @@ rulesBtn.addEventListener("click", () => {
   } else {
     rulesBtn.textContent = "Show rules";
     rulesContainer.style.display = "none";
+  }
+});
+
+keepScoreBtn.addEventListener("click", () => {
+  let selectedValue;
+  let achieved;
+
+  for (const radioButton of scoreInputs) {
+    if (radioButton.checked) {
+      selectedValue = radioButton.value;
+      achieved = radioButton.id;
+      break;
+    }
+  }
+
+  if (selectedValue) {
+    rolls = 0;
+    round++;
+    updateStats();
+    resetRadioOptions();
+    updateScore(selectedValue, achieved);
+    
+  } else {
+    alert("Please select an option or roll the dice");
   }
 });
